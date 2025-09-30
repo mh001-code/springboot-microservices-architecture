@@ -1,0 +1,6 @@
+spring:
+  devTools:
+    remote:
+      secret: 123
+    restart:
+      trigger-file: trigger.txt
