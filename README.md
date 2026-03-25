@@ -1,77 +1,99 @@
 # springboot-microservices-architecture
-Projeto de microsserviços em Java com Spring Boot, integrando comunicação síncrona via REST e assíncrona via RabbitMQ entre os serviços de armazém e vitrine. Aplicação prática de arquitetura distribuída, mensageria e boas práticas de desenvolvimento.
 
-## Sobre o Projeto
+Microservices architecture built with Java 17 and Spring Boot 3, featuring synchronous REST and asynchronous RabbitMQ communication between two independent services: **warehouse** and **storefront**.
 
-Este projeto foi desenvolvido como parte de um desafio da [DIO](https://www.dio.me/) com o objetivo de aplicar os conhecimentos adquiridos em arquitetura de microsserviços utilizando Java e Spring Boot. A proposta é construir dois microsserviços principais — **warehouse** (armazém) e **storefront** (vitrine) — que se comunicam de forma **síncrona** (HTTP REST) e **assíncrona** (RabbitMQ).
-
----
-
-## Entendendo o Desafio
-
-A missão é ir além do código apresentado pelo instrutor. Isso envolve:
-
-- Criar os microsserviços do zero ou com base no repositório-base.
-- Integrar ferramentas de mensageria (RabbitMQ).
-- Aplicar boas práticas de desenvolvimento e arquitetura.
-- Documentar decisões técnicas e raciocínio de forma clara.
+This project was built as a hands-on challenge proposed by [DIO](https://www.dio.me/), going beyond the instructor's base code with independent technical decisions on architecture, messaging, and documentation.
 
 ---
 
-## Tecnologias Utilizadas
-
-- **Java 17**
-- **Spring Boot 3**
-- **Spring Web**
-- **Spring Data JPA**
-- **RabbitMQ**
-- **Docker & Docker Compose**
-- **PostgreSQL**
-- **Lombok**
-- **OpenAPI / Swagger**
-- **Git & GitHub**
-
----
-
-## Estrutura dos Microsserviços
+## Services
 
 ### Warehouse Service
-
-Responsável pelo gerenciamento de estoque. Funcionalidades:
-
-- Cadastro e atualização de produtos.
-- Consulta de disponibilidade.
-- Comunicação assíncrona com o storefront via RabbitMQ.
+Manages product inventory.
+- Product registration and updates
+- Stock availability queries
+- Async communication with Storefront via RabbitMQ
 
 ### Storefront Service
-
-Responsável pela vitrine e pedidos. Funcionalidades:
-
-- Listagem de produtos disponíveis.
-- Realização de pedidos.
-- Comunicação síncrona com o warehouse via REST.
-- Comunicação assíncrona para atualização de estoque.
+Manages the product listing and orders.
+- Available product listing
+- Order placement
+- Sync communication with Warehouse via REST
+- Async stock updates via RabbitMQ
 
 ---
 
-## Comunicação entre Serviços
+## Communication
 
-| Tipo         | Tecnologia | Descrição                                                                 |
-|--------------|------------|---------------------------------------------------------------------------|
-| Síncrona     | HTTP REST  | O storefront consulta o warehouse para verificar disponibilidade de produtos. |
-| Assíncrona   | RabbitMQ   | O warehouse envia eventos de atualização de estoque para o storefront.       |
+| Type | Technology | Description |
+|------|-----------|-------------|
+| Synchronous | HTTP REST | Storefront queries Warehouse for product availability |
+| Asynchronous | RabbitMQ | Warehouse publishes stock update events to Storefront |
 
 ---
 
+## Tech Stack
 
-Decisões Técnicas
-Utilização de RabbitMQ para desacoplamento entre serviços.
+| Technology | Purpose |
+|-----------|---------|
+| Java 17 | Core language |
+| Spring Boot 3 | Application framework |
+| Spring Web | REST API |
+| Spring Data JPA | Data persistence |
+| RabbitMQ | Async messaging |
+| PostgreSQL | Relational database |
+| Docker & Docker Compose | Containerization |
+| Lombok | Boilerplate reduction |
+| OpenAPI / Swagger | API documentation |
 
-Separação clara de responsabilidades entre microsserviços.
+---
 
-Uso de Docker para facilitar o ambiente de desenvolvimento.
+## Running Locally
 
-Documentação automática com Swagger.
+### Prerequisites
+- Java 17+
+- Docker & Docker Compose
+- Maven
 
-Autor
-Marcio Henrique F. Gonçalves
+### 1. Clone the repository
+```bash
+git clone https://github.com/mh001-code/springboot-microservices-architecture.git
+cd springboot-microservices-architecture
+```
+
+### 2. Start infrastructure (RabbitMQ + PostgreSQL)
+```bash
+docker-compose up -d
+```
+
+### 3. Run the Warehouse service
+```bash
+cd warehouse
+mvn spring-boot:run
+```
+
+### 4. Run the Storefront service
+```bash
+cd storefront
+mvn spring-boot:run
+```
+
+### 5. Access Swagger docs
+- Warehouse: http://localhost:8081/swagger-ui.html
+- Storefront: http://localhost:8082/swagger-ui.html
+
+---
+
+## Technical Decisions
+
+- **RabbitMQ** for decoupling services — avoids tight coupling between warehouse and storefront
+- **Clear separation of responsibilities** — each service owns its domain
+- **Docker** for consistent local development environment
+- **Swagger** for automatic API documentation
+
+---
+
+## Author
+
+Márcio Henrique F. Gonçalves
+[linkedin.com/in/marciohenrique-dev](https://www.linkedin.com/in/marciohenrique-dev)
